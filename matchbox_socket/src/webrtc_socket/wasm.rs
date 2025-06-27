@@ -66,9 +66,9 @@ impl SignallerBuilder for WasmSignallerBuilder {
                 }
             };
         };
-        
+
         let request = serde_json::to_string(&PeerRequest::ResendPeerId)
-            .expect("serializing resend peerid request");Add commentMore actions
+            .expect("serializing resend peerid request");
         websocket_stream.send(WsMessage::Text(request)).await?;
 
         Ok(Box::new(WasmSignaller { websocket_stream }))

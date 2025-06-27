@@ -223,7 +223,7 @@ async fn message_loop<M: Messenger>(
                         PeerEvent::IdAssigned(peer_uuid) => {
                             if let Some(id_tx) = id_tx.take() {
                                 if id_tx.send(peer_uuid.to_owned()).is_err() {
-                                    // Socket receiver was dropped, exit cleanly.Add commentMore actions
+                                    // Socket receiver was dropped, exit cleanly.
                                     break Ok(());
                                 }
                             } else {

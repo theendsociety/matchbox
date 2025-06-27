@@ -153,7 +153,7 @@ impl SignalingTopology<ClientServerCallbacks, ClientServerState> for ClientServe
                 }
                 PeerRequest::ResendPeerId => {
                     let event = Message::Text(JsonPeerEvent::IdAssigned(peer_id).to_string());
-                    state.try_send_to_client(peer_id, event);Add commentMore actions
+                    state.try_send_to_client(peer_id, event);
                 }
                 PeerRequest::KeepAlive => {
                     // Do nothing. KeepAlive packets are used to protect against idle websocket
