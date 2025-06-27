@@ -96,6 +96,10 @@ impl SignalingTopology<FullMeshCallbacks, FullMeshState> for FullMesh {
                         error!("error sending: {e:?}");
                     }
                 }
+                PeerRequest::ResendPeerId => {
+                    let event = Message::Text(JsonPeerEvent::IdAssigned(peer_id).to_string());
+                    state.try_send_to_peer(peer_id, event);
+                }
                 PeerRequest::KeepAlive => {
                     // Do nothing. KeepAlive packets are used to protect against idle websocket
                     // connections getting automatically disconnected, common for reverse proxies.

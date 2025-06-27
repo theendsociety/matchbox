@@ -40,7 +40,7 @@ impl SignallerBuilder for WasmSignallerBuilder {
         mut attempts: Option<u16>,
         room_url: String,
     ) -> Result<Box<dyn Signaller>, SignalingError> {
-        let websocket_stream = 'signaling: loop {
+        let mut websocket_stream = 'signaling: loop {
             match WsMeta::connect(&room_url, None)
                 .await
                 .map_err(SignalingError::from)
@@ -66,6 +66,11 @@ impl SignallerBuilder for WasmSignallerBuilder {
                 }
             };
         };
+        
+        let request = serde_json::to_string(&PeerRequest::ResendPeerId)
+            .expect("serializing resend peerid request");Add commentMore actions
+        websocket_stream.send(WsMessage::Text(request)).await?;
+
         Ok(Box::new(WasmSignaller { websocket_stream }))
     }
 }

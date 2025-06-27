@@ -82,6 +82,15 @@ impl SignalingTopology<NoCallbacks, ServerState> for MatchmakingDemoTopology {
                         warn!("peer not found ({receiver:?}), ignoring signal");
                     }
                 }
+                PeerRequest::ResendPeerId => {Add
+                    let event = Message::Text(JsonPeerEvent::IdAssigned(peer_id).to_string());
+
+                    if let Err(e) = state.try_send(peer_id, event) {
+                        error!("error sending peer id: {e:?}");
+                    } else {
+                        info!("Resent peer id to {peer_id:?}");
+                    }
+                }
                 PeerRequest::KeepAlive => {
                     // Do nothing. KeepAlive packets are used to protect against idle websocket
                     // connections getting automatically disconnected, common for reverse proxies.
