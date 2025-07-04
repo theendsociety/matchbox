@@ -97,7 +97,7 @@ impl SignalingTopology<FullMeshCallbacks, FullMeshState> for FullMesh {
                     }
                 }
                 PeerRequest::ResendPeerId => {
-                    let event = Message::Text(JsonPeerEvent::IdAssigned(peer_id).to_string());
+                    let event = Message::Text(JsonPeerEvent::IdAssigned(peer_id).to_string().into());
                     state.try_send_to_peer(peer_id, event);
                 }
                 PeerRequest::KeepAlive => {
