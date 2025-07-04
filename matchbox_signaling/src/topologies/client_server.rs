@@ -151,6 +151,10 @@ impl SignalingTopology<ClientServerCallbacks, ClientServerState> for ClientServe
                         error!("error sending signal event: {e:?}");
                     }
                 }
+                PeerRequest::ResendPeerId => {
+                    let event = Message::Text(JsonPeerEvent::IdAssigned(peer_id).to_string().into());
+                    state.try_send_to_client(peer_id, event);
+                }
                 PeerRequest::KeepAlive => {
                     // Do nothing. KeepAlive packets are used to protect against idle websocket
                     // connections getting automatically disconnected, common for reverse proxies.

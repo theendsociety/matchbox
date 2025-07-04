@@ -221,10 +221,15 @@ async fn message_loop<M: Messenger>(
                     debug!("{event:?}");
                     match event {
                         PeerEvent::IdAssigned(peer_uuid) => {
-                            if id_tx.take().expect("already sent peer id").send(peer_uuid.to_owned()).is_err() {
-                                // Socket receiver was dropped, exit cleanly.
-                                break Ok(());
-                            };
+                            if let Some(id_tx) = id_tx.take() {
+                                if id_tx.send(peer_uuid.to_owned()).is_err() {
+                                    // Socket receiver was dropped, exit cleanly.
+                                    break Ok(());
+                                }
+                            } else {
+                                // we've already set our peer id so we can drop this event
+                                debug!("Ignoring redundant IdAssigned event")
+                            }
                         },
                         PeerEvent::NewPeer(peer_uuid) => {
                             let (signal_tx, signal_rx) = futures_channel::mpsc::unbounded();
