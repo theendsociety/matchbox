@@ -90,7 +90,7 @@ where
         let sender = spawn_sender_task(ws_sink);
 
         // Send ID to peer
-        let event_text = JsonPeerEvent::IdAssigned(peer_id).to_string().into();
+        let event_text = JsonPeerEvent::IdAssigned(peer_id).to_string();
         let event = Message::Text((&event_text).into());
         if let Err(e) = try_send(&sender, event) {
             error!("error sending to {peer_id}: {e:?}");
