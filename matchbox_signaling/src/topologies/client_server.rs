@@ -152,7 +152,7 @@ impl SignalingTopology<ClientServerCallbacks, ClientServerState> for ClientServe
                     }
                 }
                 PeerRequest::ResendPeerId => {
-                    let event = Message::Text(JsonPeerEvent::IdAssigned(peer_id).to_string());
+                    let event = Message::Text(JsonPeerEvent::IdAssigned(peer_id).to_string().into());
                     state.try_send_to_client(peer_id, event);
                 }
                 PeerRequest::KeepAlive => {
